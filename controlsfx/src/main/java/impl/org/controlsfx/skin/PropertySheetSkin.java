@@ -306,7 +306,6 @@ public class PropertySheetSkin extends SkinBase<PropertySheet> {
                 editor = new AbstractPropertyEditor<Object, TextField>(item, new TextField(), true) {
                     {
                         getEditor().setEditable(false);
-                        getEditor().setDisable(true);
                     }
                     
                     /**
@@ -324,7 +323,12 @@ public class PropertySheetSkin extends SkinBase<PropertySheet> {
                     }
                 };
             } else if (! item.isEditable()) {
-                editor.getEditor().setDisable(true);
+                var currentEditor = editor.getEditor();
+                if (currentEditor instanceof TextField) {
+                    ((TextField) currentEditor).setEditable(false);
+                } else {
+                    editor.getEditor().setDisable(true);
+                }
             }
             editor.setValue(item.getValue());
             return editor.getEditor();
